@@ -10,13 +10,13 @@ import {
   Edit3, 
   Check, 
   Inbox, 
-  Briefcase, 
+  GraduationCap, 
   User, 
-  Layers, 
   Sparkles,
-  Code
+  Code,
+  FolderGit2
 } from 'lucide-react';
-import { PortfolioData, ProjectItem, SkillItem, ContactSubmission } from '../types';
+import { PortfolioData, ProjectItem, SkillItem, ContactSubmission, CertificationItem } from '../types';
 
 interface PortfolioEditorModalProps {
   portfolio: PortfolioData;
@@ -37,7 +37,7 @@ export default function PortfolioEditorModal({
   messages,
   onClearMessages
 }: PortfolioEditorModalProps) {
-  const [activeTab, setActiveTab] = useState<'profile' | 'projects' | 'skills' | 'messages' | 'export'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'education' | 'projects' | 'skills' | 'messages' | 'export'>('profile');
   const [formData, setFormData] = useState<PortfolioData>(portfolio);
   const [savedToast, setSavedToast] = useState(false);
   const [editingProject, setEditingProject] = useState<ProjectItem | null>(null);
@@ -46,14 +46,14 @@ export default function PortfolioEditorModal({
   // New skill input
   const [newSkill, setNewSkill] = useState<{
     name: string;
-    category: 'frontend' | 'backend' | 'architecture' | 'design';
+    category: 'Web Development' | 'Programming Languages' | 'AI & Emerging Tech' | 'Security & Tools';
     level: number;
-    experienceYears: string;
+    statusTag: string;
   }>({
     name: '',
-    category: 'frontend',
-    level: 90,
-    experienceYears: '3 yrs'
+    category: 'Web Development',
+    level: 80,
+    statusTag: 'Hands-on'
   });
 
   if (!isOpen) return null;
@@ -68,7 +68,7 @@ export default function PortfolioEditorModal({
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(formData, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `${formData.name.toLowerCase()}-portfolio.json`);
+    downloadAnchor.setAttribute("download", `amyy-portfolio.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -81,7 +81,7 @@ export default function PortfolioEditorModal({
     reader.onload = (event) => {
       try {
         const parsed = JSON.parse(event.target?.result as string);
-        if (parsed.name && parsed.projects) {
+        if (parsed.name && parsed.education) {
           setFormData(parsed);
           onSave(parsed);
           setSavedToast(true);
@@ -102,12 +102,12 @@ export default function PortfolioEditorModal({
         name: newSkill.name.trim(),
         category: newSkill.category,
         level: Number(newSkill.level),
-        experienceYears: newSkill.experienceYears,
-        isFavorite: false
+        statusTag: newSkill.statusTag,
+        isCore: true
       }
     ];
     setFormData({ ...formData, skills: updatedSkills });
-    setNewSkill({ name: '', category: 'frontend', level: 90, experienceYears: '3 yrs' });
+    setNewSkill({ name: '', category: 'Web Development', level: 80, statusTag: 'Hands-on' });
   };
 
   const handleDeleteSkill = (name: string) => {
@@ -156,10 +156,10 @@ export default function PortfolioEditorModal({
             </div>
             <div>
               <h3 className="font-display font-bold text-base sm:text-lg text-stone-900 dark:text-stone-100">
-                Live Portfolio Customizer
+                Live Portfolio Customizer — Amyy
               </h3>
               <p className="text-xs text-stone-500">
-                Personalize your name, bio, projects, and skills in real-time.
+                Update your contact details, career objective, academic status, projects, and skills.
               </p>
             </div>
           </div>
@@ -190,8 +190,9 @@ export default function PortfolioEditorModal({
         {/* Navigation Tabs */}
         <div className="flex items-center gap-1 px-6 pt-3 border-b border-stone-200 dark:border-stone-800 bg-stone-100/50 dark:bg-stone-900/50 overflow-x-auto shrink-0">
           {[
-            { id: 'profile', label: 'Basic Profile', icon: User },
-            { id: 'projects', label: `Projects (${formData.projects.length})`, icon: Briefcase },
+            { id: 'profile', label: 'Basic Profile & Bio', icon: User },
+            { id: 'education', label: 'Education & Certs', icon: GraduationCap },
+            { id: 'projects', label: `Projects (${formData.projects.length})`, icon: FolderGit2 },
             { id: 'skills', label: `Skills (${formData.skills.length})`, icon: Code },
             { id: 'messages', label: `Inbox (${messages.length})`, icon: Inbox },
             { id: 'export', label: 'Export / Reset', icon: Download },
@@ -248,6 +249,92 @@ export default function PortfolioEditorModal({
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-3 py-2 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg text-stone-900 dark:text-stone-100"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full px-3 py-2 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg text-stone-900 dark:text-stone-100 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                    Institution / University
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.institution}
+                    onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
+                    className="w-full px-3 py-2 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg text-stone-900 dark:text-stone-100"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.location}
+                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                    className="w-full px-3 py-2 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg text-stone-900 dark:text-stone-100"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                    LinkedIn Profile URL
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="https://www.linkedin.com/in/yourprofile"
+                    value={formData.socials?.linkedin || ''}
+                    onChange={(e) => setFormData({ 
+                      ...formData, 
+                      socials: { ...formData.socials, linkedin: e.target.value } 
+                    })}
+                    className="w-full px-3 py-2 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg text-stone-900 dark:text-stone-100"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                    Fiverr Profile URL
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="https://www.fiverr.com/yourusername"
+                    value={formData.socials?.fiverr || ''}
+                    onChange={(e) => setFormData({ 
+                      ...formData, 
+                      socials: { ...formData.socials, fiverr: e.target.value } 
+                    })}
+                    className="w-full px-3 py-2 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg text-stone-900 dark:text-stone-100"
+                  />
+                </div>
+              </div>
+
               <div>
                 <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                   Availability Status Tag
@@ -260,95 +347,153 @@ export default function PortfolioEditorModal({
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
-                    Location
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.location}
-                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                    className="w-full px-3 py-2 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg text-stone-900 dark:text-stone-100"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.socials.email}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      socials: { ...formData.socials, email: e.target.value }
-                    })}
-                    className="w-full px-3 py-2 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg text-stone-900 dark:text-stone-100"
-                  />
-                </div>
-              </div>
-
               <div>
                 <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
-                  Short Bio (Elevator Pitch)
+                  Profile Summary
                 </label>
                 <textarea
                   rows={3}
-                  value={formData.bio}
-                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                  value={formData.profile}
+                  onChange={(e) => setFormData({ ...formData, profile: e.target.value })}
                   className="w-full px-3 py-2 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg text-stone-900 dark:text-stone-100 resize-y"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
-                  In-Depth About Story
+                  Career Objective
                 </label>
                 <textarea
-                  rows={4}
-                  value={formData.aboutStory}
-                  onChange={(e) => setFormData({ ...formData, aboutStory: e.target.value })}
+                  rows={3}
+                  value={formData.careerObjective}
+                  onChange={(e) => setFormData({ ...formData, careerObjective: e.target.value })}
                   className="w-full px-3 py-2 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg text-stone-900 dark:text-stone-100 resize-y"
                 />
               </div>
+            </div>
+          )}
 
-              <div className="pt-2 border-t border-stone-200 dark:border-stone-800">
-                <h4 className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">
-                  Social Links
+          {/* TAB: EDUCATION */}
+          {activeTab === 'education' && (
+            <div className="space-y-6 max-w-2xl">
+              <div className="p-4 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 space-y-3">
+                <h4 className="font-display font-bold text-xs uppercase tracking-wider text-stone-500">
+                  Degree Details
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <input
-                    type="url"
-                    placeholder="GitHub URL"
-                    value={formData.socials.github || ''}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      socials: { ...formData.socials, github: e.target.value }
-                    })}
-                    className="px-3 py-1.5 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg"
-                  />
-                  <input
-                    type="url"
-                    placeholder="LinkedIn URL"
-                    value={formData.socials.linkedin || ''}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      socials: { ...formData.socials, linkedin: e.target.value }
-                    })}
-                    className="px-3 py-1.5 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg"
-                  />
-                  <input
-                    type="url"
-                    placeholder="Twitter/X URL"
-                    value={formData.socials.twitter || ''}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      socials: { ...formData.socials, twitter: e.target.value }
-                    })}
-                    className="px-3 py-1.5 text-xs bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded-lg"
-                  />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                      Degree Title
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.education.degree}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        education: { ...formData.education, degree: e.target.value }
+                      })}
+                      className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                      University
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.education.institution}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        education: { ...formData.education, institution: e.target.value }
+                      })}
+                      className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
+                    />
+                  </div>
                 </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                      Semester
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.education.semester}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        education: { ...formData.education, semester: e.target.value }
+                      })}
+                      className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                      Year Standing
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.education.yearLevel}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        education: { ...formData.education, yearLevel: e.target.value }
+                      })}
+                      className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                      CGPA
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.education.cgpa}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        education: { ...formData.education, cgpa: e.target.value }
+                      })}
+                      className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg font-mono"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                      Graduation Year
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.education.graduationYear}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        education: { ...formData.education, graduationYear: e.target.value }
+                      })}
+                      className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Certifications list */}
+              <div className="space-y-3">
+                <h4 className="font-display font-bold text-xs uppercase tracking-wider text-stone-500">
+                  Certifications ({formData.certifications.length})
+                </h4>
+
+                {formData.certifications.map((cert) => (
+                  <div key={cert.id} className="p-3.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 flex items-center justify-between">
+                    <div>
+                      <div className="font-bold text-xs text-stone-900 dark:text-stone-100">
+                        {cert.title}
+                      </div>
+                      <div className="text-[11px] text-stone-500">
+                        {cert.issuer} • <span className={cert.status === 'Completed' ? 'text-emerald-600 font-semibold' : 'text-amber-600 font-semibold'}>{cert.status}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -360,10 +505,9 @@ export default function PortfolioEditorModal({
               {(isAddingProject || editingProject) ? (
                 <div className="p-5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 space-y-4">
                   <h4 className="font-display font-bold text-sm text-stone-900 dark:text-stone-100">
-                    {isAddingProject ? 'Add New Project' : 'Edit Project'}
+                    {isAddingProject ? 'Add Student Project' : 'Edit Project'}
                   </h4>
                   
-                  {/* Inline Project Form */}
                   <form onSubmit={(e) => {
                     e.preventDefault();
                     const target = e.target as any;
@@ -374,10 +518,9 @@ export default function PortfolioEditorModal({
                       description: target.projectDesc.value,
                       category: target.projectCategory.value,
                       year: target.projectYear.value,
+                      statusNote: target.projectStatus.value,
                       tags: target.projectTags.value.split(',').map((t: string) => t.trim()).filter(Boolean),
-                      liveUrl: target.projectLiveUrl.value,
-                      githubUrl: target.projectGithubUrl.value,
-                      featured: target.projectFeatured.checked
+                      featured: true
                     };
                     handleSaveProject(projectToSave);
                   }} className="space-y-3">
@@ -397,16 +540,11 @@ export default function PortfolioEditorModal({
                         <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
                           Category
                         </label>
-                        <select
+                        <input
                           name="projectCategory"
-                          defaultValue={editingProject?.category || 'Full Stack'}
+                          defaultValue={editingProject?.category || 'Web Development'}
                           className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
-                        >
-                          <option value="Full Stack">Full Stack</option>
-                          <option value="Frontend">Frontend</option>
-                          <option value="UI Systems">UI Systems</option>
-                          <option value="Dev Tools">Dev Tools</option>
-                        </select>
+                        />
                       </div>
                     </div>
 
@@ -424,7 +562,7 @@ export default function PortfolioEditorModal({
 
                     <div>
                       <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
-                        Detailed Description
+                        Description
                       </label>
                       <textarea
                         name="projectDesc"
@@ -438,11 +576,11 @@ export default function PortfolioEditorModal({
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <div>
                         <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
-                          Tech Tags (comma separated)
+                          Tags (comma-separated)
                         </label>
                         <input
                           name="projectTags"
-                          defaultValue={editingProject?.tags.join(', ') || 'React, TypeScript, Tailwind'}
+                          defaultValue={editingProject?.tags.join(', ') || 'HTML5, CSS3, JavaScript'}
                           className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
                         />
                       </div>
@@ -452,46 +590,17 @@ export default function PortfolioEditorModal({
                         </label>
                         <input
                           name="projectYear"
-                          defaultValue={editingProject?.year || '2025'}
-                          className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
-                        />
-                      </div>
-                      <div className="flex items-center gap-2 pt-5">
-                        <input
-                          type="checkbox"
-                          id="projectFeatured"
-                          name="projectFeatured"
-                          defaultChecked={editingProject?.featured ?? true}
-                          className="rounded"
-                        />
-                        <label htmlFor="projectFeatured" className="text-xs text-stone-700 dark:text-stone-300 font-medium">
-                          Featured on Hero
-                        </label>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
-                          Live Demo URL
-                        </label>
-                        <input
-                          name="projectLiveUrl"
-                          type="url"
-                          defaultValue={editingProject?.liveUrl || ''}
-                          placeholder="https://..."
+                          defaultValue={editingProject?.year || '2024'}
                           className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
                         />
                       </div>
                       <div>
                         <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
-                          GitHub Repo URL
+                          Status Note
                         </label>
                         <input
-                          name="projectGithubUrl"
-                          type="url"
-                          defaultValue={editingProject?.githubUrl || ''}
-                          placeholder="https://github.com/..."
+                          name="projectStatus"
+                          defaultValue={editingProject?.statusNote || 'Student Project • Not publicly launched'}
                           className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
                         />
                       </div>
@@ -517,7 +626,7 @@ export default function PortfolioEditorModal({
               ) : (
                 <div className="flex justify-between items-center">
                   <span className="text-xs font-bold uppercase tracking-wider text-stone-400">
-                    Active Projects
+                    Active Student Projects
                   </span>
                   <button
                     type="button"
@@ -545,7 +654,7 @@ export default function PortfolioEditorModal({
                         <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400">
                           {proj.category}
                         </span>
-                        <span className="text-xs text-stone-400">{proj.year}</span>
+                        <span className="text-xs text-amber-700 dark:text-amber-400">{proj.statusNote}</span>
                       </div>
                       <p className="text-xs text-stone-500 mt-1 line-clamp-1">{proj.tagline}</p>
                     </div>
@@ -581,11 +690,11 @@ export default function PortfolioEditorModal({
               <div className="p-4 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 flex flex-wrap items-end gap-3">
                 <div className="flex-1 min-w-[150px]">
                   <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
-                    Technology Name
+                    Skill Name
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. GraphQL, Rust"
+                    placeholder="e.g. Python, SQL"
                     value={newSkill.name}
                     onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })}
                     className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
@@ -601,16 +710,16 @@ export default function PortfolioEditorModal({
                     onChange={(e) => setNewSkill({ ...newSkill, category: e.target.value as any })}
                     className="px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
                   >
-                    <option value="frontend">Frontend</option>
-                    <option value="backend">Backend</option>
-                    <option value="architecture">Architecture/DevOps</option>
-                    <option value="design">Design & Systems</option>
+                    <option value="Web Development">Web Development</option>
+                    <option value="Programming Languages">Programming Languages</option>
+                    <option value="AI & Emerging Tech">AI & Emerging Tech</option>
+                    <option value="Security & Tools">Security & Tools</option>
                   </select>
                 </div>
 
-                <div className="w-24">
+                <div className="w-20">
                   <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
-                    Mastery %
+                    Level %
                   </label>
                   <input
                     type="number"
@@ -618,6 +727,19 @@ export default function PortfolioEditorModal({
                     max="100"
                     value={newSkill.level}
                     onChange={(e) => setNewSkill({ ...newSkill, level: Number(e.target.value) })}
+                    className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
+                  />
+                </div>
+
+                <div className="w-28">
+                  <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                    Status Tag
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Basic / Core"
+                    value={newSkill.statusTag}
+                    onChange={(e) => setNewSkill({ ...newSkill, statusTag: e.target.value })}
                     className="w-full px-3 py-1.5 text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
                   />
                 </div>
@@ -643,7 +765,7 @@ export default function PortfolioEditorModal({
                         {skill.name}
                       </div>
                       <div className="text-[10px] text-stone-400 font-mono">
-                        {skill.category} • {skill.level}%
+                        {skill.category} • {skill.level}% {skill.statusTag ? `(${skill.statusTag})` : ''}
                       </div>
                     </div>
                     <button
@@ -680,7 +802,7 @@ export default function PortfolioEditorModal({
 
               {messages.length === 0 ? (
                 <div className="p-8 text-center rounded-xl border border-dashed border-stone-200 dark:border-stone-800 text-stone-500 text-xs">
-                  No contact messages received yet. Test the contact form on your portfolio to see incoming notes here!
+                  No contact messages received yet. Any messages submitted via the website contact form will appear here!
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -691,7 +813,7 @@ export default function PortfolioEditorModal({
                     >
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-bold text-stone-900 dark:text-stone-100">
-                          {msg.name} ({msg.email})
+                          {msg.name} ({msg.email}) {msg.phone ? `• ${msg.phone}` : ''}
                         </span>
                         <span className="text-[11px] text-stone-400 font-mono">
                           {msg.date}
@@ -707,7 +829,7 @@ export default function PortfolioEditorModal({
                       </p>
                       <div className="pt-1">
                         <a
-                          href={`mailto:${msg.email}?subject=Re: ${encodeURIComponent(msg.subject || 'Portfolio Inquiry')}`}
+                          href={`mailto:${msg.email}?subject=Re: ${encodeURIComponent(msg.subject || 'Internship Inquiry')}`}
                           className="text-[11px] font-bold text-stone-900 dark:text-stone-100 hover:underline"
                         >
                           Reply via Email &rarr;
@@ -728,7 +850,7 @@ export default function PortfolioEditorModal({
                   Export Portfolio Data (JSON)
                 </h4>
                 <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
-                  Download a complete backup copy of your customized portfolio configurations, projects, and bio settings.
+                  Download a complete backup JSON copy of your portfolio configurations, projects, and skills.
                 </p>
                 <button
                   type="button"
@@ -745,7 +867,7 @@ export default function PortfolioEditorModal({
                   Import Portfolio Data
                 </h4>
                 <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
-                  Upload a previously saved portfolio JSON file to instantly restore your custom details.
+                  Upload a previously saved portfolio JSON file to restore your customizations.
                 </p>
                 <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-stone-800 dark:text-stone-200 cursor-pointer hover:bg-stone-100">
                   <Upload className="w-4 h-4" />
@@ -761,15 +883,15 @@ export default function PortfolioEditorModal({
 
               <div className="p-5 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/40 dark:bg-rose-950/20 space-y-3">
                 <h4 className="font-display font-bold text-sm text-rose-900 dark:text-rose-300">
-                  Reset to Original Amy Template
+                  Reset to Amyy Default Portfolio
                 </h4>
                 <p className="text-xs text-rose-800/80 dark:text-rose-400 leading-relaxed">
-                  Discard all customized changes and revert back to the original sample portfolio data.
+                  Revert all customized details back to Amyy's original University of Sindh resume data.
                 </p>
                 <button
                   type="button"
                   onClick={() => {
-                    if (confirm('Are you sure you want to reset all portfolio fields to defaults?')) {
+                    if (confirm('Reset portfolio to Amyy default resume details?')) {
                       onReset();
                       onClose();
                     }
@@ -788,7 +910,7 @@ export default function PortfolioEditorModal({
         {/* Modal Footer */}
         <div className="px-6 py-3.5 bg-stone-100/80 dark:bg-stone-950 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between shrink-0">
           <span className="text-[11px] text-stone-500 font-mono">
-            Changes save directly to your browser's local storage.
+            Edits are saved directly in your browser's local storage.
           </span>
           <div className="flex items-center gap-2">
             <button

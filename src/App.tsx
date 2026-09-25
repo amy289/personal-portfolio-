@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import AboutSection from './components/AboutSection';
+import EducationSection from './components/EducationSection';
 import ProjectsSection from './components/ProjectsSection';
-import SkillsSection from './components/SkillsSection';
-import ExperienceSection from './components/ExperienceSection';
-import TestimonialsSection from './components/TestimonialsSection';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import ResumeModal from './components/ResumeModal';
@@ -13,9 +11,9 @@ import PortfolioEditorModal from './components/PortfolioEditorModal';
 import { initialPortfolioData } from './data/defaultPortfolio';
 import { PortfolioData, ContactSubmission } from './types';
 
-const STORAGE_KEY = 'amy_portfolio_data_v1';
-const MESSAGES_KEY = 'amy_portfolio_messages_v1';
-const THEME_KEY = 'amy_portfolio_theme';
+const STORAGE_KEY = 'amyy_portfolio_data_v5';
+const MESSAGES_KEY = 'amyy_portfolio_messages_v5';
+const THEME_KEY = 'amyy_portfolio_theme';
 
 export default function App() {
   // Theme state
@@ -34,7 +32,20 @@ export default function App() {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         try {
-          return JSON.parse(saved);
+          const parsed = JSON.parse(saved);
+          // Verify it matches Amyy's student profile schema
+          if (parsed.name === 'Amyy' && parsed.education && parsed.institution) {
+            if (parsed.email === 'marimehndi@gmail.com') {
+              parsed.email = 'amyyb871@gmail.com';
+            }
+            if (parsed.socials?.email === 'marimehndi@gmail.com') {
+              parsed.socials.email = 'amyyb871@gmail.com';
+            }
+            if (parsed.statusBadge === 'Seeking Paid Internship') {
+              parsed.statusBadge = 'BS Software Engineering • 2nd Year';
+            }
+            return parsed;
+          }
         } catch (e) {
           console.error('Failed to parse saved portfolio data', e);
         }
@@ -55,16 +66,7 @@ export default function App() {
         }
       }
     }
-    return [
-      {
-        id: 'msg-sample-1',
-        name: 'Sarah Lin',
-        email: 'sarah.lin@techventures.io',
-        subject: 'Senior Frontend Architect Opportunity',
-        message: 'Hi Amy, your work on the WebGL real-time collaboration canvas (Prism Studio) is truly remarkable. We are building our next-gen engineering platform and would love to chat with you this week.',
-        date: 'Recent'
-      }
-    ];
+    return [];
   });
 
   // Modal open states
@@ -146,26 +148,20 @@ export default function App() {
           onOpenResume={() => setIsResumeOpen(true)}
         />
 
+        <EducationSection
+          education={portfolio.education}
+          certifications={portfolio.certifications}
+        />
+
         <ProjectsSection
           projects={portfolio.projects}
         />
 
-        <SkillsSection
-          skills={portfolio.skills}
-        />
-
-        <ExperienceSection
-          experience={portfolio.experience}
-          education={portfolio.education}
-        />
-
-        <TestimonialsSection
-          testimonials={portfolio.testimonials}
-        />
-
         <ContactSection
-          socials={portfolio.socials}
+          email={portfolio.email}
+          phone={portfolio.phone}
           location={portfolio.location}
+          careerObjective={portfolio.careerObjective}
           onSendMessage={handleSendMessage}
         />
       </main>

@@ -1,11 +1,3 @@
-export interface SocialLinks {
-  github?: string;
-  linkedin?: string;
-  twitter?: string;
-  email: string;
-  website?: string;
-}
-
 export interface Metric {
   label: string;
   value: string;
@@ -17,77 +9,76 @@ export interface ProjectItem {
   tagline: string;
   description: string;
   longDescription?: string;
-  category: 'Full Stack' | 'Frontend' | 'UI Systems' | 'Dev Tools';
+  category: string;
   tags: string[];
-  liveUrl?: string;
-  githubUrl?: string;
+  statusNote?: string;
   year: string;
   featured: boolean;
-  metrics?: Metric[];
   keyFeatures?: string[];
-  role?: string;
+  technologiesUsed?: string[];
 }
 
 export interface SkillItem {
   name: string;
-  category: 'frontend' | 'backend' | 'architecture' | 'design';
+  category: 'Web Development' | 'Programming Languages' | 'AI & Emerging Tech' | 'Security & Tools';
   level: number; // 1 - 100
-  experienceYears?: string;
-  isFavorite?: boolean;
+  statusTag?: string; // e.g. "Core", "Basic", "Currently Learning", "Hands-on"
+  isCore?: boolean;
 }
 
-export interface ExperienceItem {
+export interface CertificationItem {
   id: string;
-  role: string;
-  company: string;
-  companyUrl?: string;
-  location: string;
-  period: string;
-  current?: boolean;
-  description: string;
-  achievements: string[];
-  skills: string[];
+  title: string;
+  issuer: string;
+  status: 'Completed' | 'In Progress';
+  iconType?: string;
+  description?: string;
 }
 
-export interface EducationItem {
-  id: string;
+export interface EducationInfo {
   degree: string;
   institution: string;
   location: string;
-  period: string;
+  semester: string;
+  yearLevel: string;
+  graduationYear: string;
+  cgpa: string;
   details?: string;
 }
 
-export interface TestimonialItem {
-  id: string;
-  name: string;
-  role: string;
-  company: string;
-  content: string;
-  avatarText: string;
+export interface SocialLinks {
+  email: string;
+  phone: string;
+  whatsappUrl?: string;
+  github?: string;
+  linkedin?: string;
+  fiverr?: string;
 }
 
 export interface PortfolioData {
   name: string;
   headlineRole: string;
-  statusBadge: string;
+  institution: string;
   location: string;
-  bio: string;
-  aboutStory: string;
-  aboutPoints: string[];
-  socials: SocialLinks;
-  stats: Metric[];
-  projects: ProjectItem[];
+  statusBadge: string;
+  email: string;
+  phone: string;
+  profile: string;
+  careerObjective: string;
+  areasOfInterest: string[];
+  education: EducationInfo;
+  certifications: CertificationItem[];
   skills: SkillItem[];
-  experience: ExperienceItem[];
-  education: EducationItem[];
-  testimonials: TestimonialItem[];
+  projects: ProjectItem[];
+  stats: Metric[];
+  socials: SocialLinks;
 }
 
 export interface ContactSubmission {
   id: string;
   name: string;
   email: string;
+  phone?: string;
   subject: string;
   message: string;
   date: string;

@@ -1,39 +1,30 @@
 import { useState } from 'react';
 import { 
-  Mail, 
   Send, 
-  Copy, 
   Check, 
-  MapPin, 
-  Clock, 
-  Sparkles, 
-  MessageSquare,
-  AlertCircle
+  AlertCircle,
+  MessageSquare
 } from 'lucide-react';
-import { SocialLinks, ContactSubmission } from '../types';
+import { ContactSubmission } from '../types';
 
 interface ContactSectionProps {
-  socials: SocialLinks;
-  location: string;
+  email?: string;
+  phone?: string;
+  location?: string;
+  careerObjective?: string;
   onSendMessage: (submission: Omit<ContactSubmission, 'id' | 'date'>) => void;
 }
 
-export default function ContactSection({ socials, location, onSendMessage }: ContactSectionProps) {
+export default function ContactSection({ onSendMessage }: ContactSectionProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     subject: '',
     message: ''
   });
-  const [copied, setCopied] = useState(false);
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-
-  const copyEmail = () => {
-    navigator.clipboard.writeText(socials.email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2200);
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,229 +46,182 @@ export default function ContactSection({ socials, location, onSendMessage }: Con
     setTimeout(() => {
       onSendMessage(formData);
       setStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 600);
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    }, 500);
   };
 
   return (
-    <section id="contact" className="py-16 md:py-24 border-t border-stone-200/90 dark:border-stone-800/90">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="py-20 md:py-28 border-t border-stone-200/90 dark:border-stone-800/90 relative overflow-hidden">
+      {/* Subtle ambient glows */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 blur-3xl pointer-events-none -z-10 rounded-full" />
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="flex flex-col mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-stone-500 dark:text-stone-400 mb-2">
-            Get In Touch
-          </span>
-          <h2 className="font-display font-bold text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 tracking-tight">
-            Let's build something enduring together.
+        <div className="flex flex-col items-center text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold mb-3 shadow-2xs">
+            <MessageSquare className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <span>Direct Messaging</span>
+          </div>
+          <h2 className="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl text-stone-900 dark:text-stone-100 tracking-tight">
+            Connect with Amyy
           </h2>
-          <p className="text-stone-600 dark:text-stone-400 text-sm sm:text-base mt-2 max-w-xl">
-            Currently open to senior engineering roles, high-impact consulting contracts, and interesting distributed systems discussions.
+          <p className="text-stone-600 dark:text-stone-400 text-sm sm:text-base mt-3 max-w-xl mx-auto leading-relaxed">
+            Send a direct message regarding software development, student projects, or technical inquiries.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-          
-          {/* Coordinates & Direct Links Column */}
-          <div className="lg:col-span-5 space-y-6">
+        {/* Centered Direct Message Form Card */}
+        <div className="max-w-2xl mx-auto">
+          <div className="rounded-3xl border border-stone-200/90 dark:border-stone-800 bg-white dark:bg-stone-900 p-6 sm:p-10 shadow-sm relative overflow-hidden">
+            {/* Top gradient accent bar */}
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-indigo-600" />
             
-            {/* Primary Email Card */}
-            <div className="p-6 rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-2xs">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-stone-400 mb-2">
-                <Mail className="w-3.5 h-3.5" />
-                <span>Direct Inbox</span>
-              </div>
-              
-              <div className="flex items-center justify-between gap-3 mt-1">
-                <a
-                  id="contact-mailto-link"
-                  href={`mailto:${socials.email}`}
-                  className="font-display font-bold text-base sm:text-lg text-stone-900 dark:text-stone-100 hover:text-stone-600 dark:hover:text-stone-300 transition-colors break-all"
-                >
-                  {socials.email}
-                </a>
+            {status === 'success' ? (
+              <div className="py-12 text-center space-y-4">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-xs">
+                  <Check className="w-7 h-7" />
+                </div>
+                <h3 className="font-display font-bold text-2xl text-stone-900 dark:text-stone-100">
+                  Message Sent Successfully
+                </h3>
+                <p className="text-stone-600 dark:text-stone-400 text-sm max-w-md mx-auto leading-relaxed">
+                  Thank you for reaching out! Your message has been received and stored in the portfolio inbox.
+                </p>
                 <button
-                  id="contact-copy-email-btn"
                   type="button"
-                  onClick={copyEmail}
-                  className="p-2 text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-lg transition-colors shrink-0"
-                  title="Copy email to clipboard"
+                  onClick={() => setStatus('idle')}
+                  className="mt-4 px-5 py-2.5 rounded-xl text-xs font-bold text-stone-800 dark:text-stone-200 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors shadow-2xs"
                 >
-                  {copied ? (
-                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
+                  Send another message
                 </button>
               </div>
-
-              {copied && (
-                <p className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium mt-2">
-                  ✓ Copied email address to clipboard!
-                </p>
-              )}
-            </div>
-
-            {/* Location & Timezone Details */}
-            <div className="p-6 rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-2xs space-y-4">
-              <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-stone-400 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400">
-                    Location
-                  </h4>
-                  <p className="text-sm font-semibold text-stone-800 dark:text-stone-200 mt-0.5">
-                    {location}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 pt-3 border-t border-stone-100 dark:border-stone-800">
-                <Clock className="w-4 h-4 text-stone-400 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400">
-                    Response Expectations
-                  </h4>
-                  <p className="text-xs text-stone-600 dark:text-stone-400 mt-0.5 leading-relaxed">
-                    Typically responds within 24 hours. PST / UTC-8 timezone working hours.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Availability Notice */}
-            <div className="p-5 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/60">
-              <div className="flex items-center gap-2 text-xs font-bold text-emerald-900 dark:text-emerald-300">
-                <Sparkles className="w-4 h-4 text-emerald-600" />
-                <span>Status: Available for Work</span>
-              </div>
-              <p className="text-xs text-emerald-800/90 dark:text-emerald-400 mt-1 leading-relaxed">
-                Currently taking calls for Q2 and Q3 product design, front-end overhaul, and distributed engineering initiatives.
-              </p>
-            </div>
-
-          </div>
-
-          {/* Interactive Contact Form */}
-          <div className="lg:col-span-7">
-            <div className="rounded-2xl border border-stone-200/90 dark:border-stone-800 bg-white dark:bg-stone-900 p-6 sm:p-8 shadow-2xs">
-              
-              {status === 'success' ? (
-                <div className="py-10 text-center space-y-4">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
-                    <Check className="w-6 h-6" />
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {status === 'error' && (
+                  <div className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-800/80 flex items-start gap-2.5 text-xs text-red-800 dark:text-red-300">
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>{errorMessage}</span>
                   </div>
-                  <h3 className="font-display font-bold text-xl text-stone-900 dark:text-stone-100">
-                    Message Sent Successfully
-                  </h3>
-                  <p className="text-stone-600 dark:text-stone-400 text-sm max-w-md mx-auto leading-relaxed">
-                    Thank you for reaching out. Your message has been safely received and stored. I will respond to your provided email address shortly.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setStatus('idle')}
-                    className="mt-4 px-4 py-2 rounded-xl text-xs font-semibold text-stone-800 dark:text-stone-200 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 transition-colors"
-                  >
-                    Send another note
-                  </button>
-                </div>
-              ) : (
-                <form id="portfolio-contact-form" onSubmit={handleSubmit} className="space-y-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <MessageSquare className="w-4 h-4 text-stone-400" />
-                    <h3 className="font-display font-bold text-base text-stone-900 dark:text-stone-100">
-                      Send a Direct Message
-                    </h3>
-                  </div>
+                )}
 
-                  {status === 'error' && (
-                    <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 flex items-center gap-2 text-xs font-medium text-rose-800 dark:text-rose-300">
-                      <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
-                      <span>{errorMessage}</span>
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="contact-name" className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
-                        Your Name *
-                      </label>
-                      <input
-                        id="contact-name"
-                        type="text"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Alex Morgan"
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-stone-50 dark:bg-stone-950 border border-stone-300/80 dark:border-stone-700 rounded-xl text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:border-stone-500 focus:bg-white dark:focus:bg-stone-900 transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="contact-email" className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
-                        Your Email *
-                      </label>
-                      <input
-                        id="contact-email"
-                        type="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="alex@company.com"
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-stone-50 dark:bg-stone-950 border border-stone-300/80 dark:border-stone-700 rounded-xl text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:border-stone-500 focus:bg-white dark:focus:bg-stone-900 transition-all"
-                      />
-                    </div>
-                  </div>
-
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Name Input */}
                   <div>
-                    <label htmlFor="contact-subject" className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
-                      Subject
+                    <label 
+                      htmlFor="contact-name" 
+                      className="block text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-1.5"
+                    >
+                      Your Name <span className="text-emerald-600">*</span>
+                    </label>
+                    <input
+                      id="contact-name"
+                      type="text"
+                      required
+                      placeholder="e.g. Sarah Ahmed"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-sm text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-stone-900 dark:focus:ring-stone-100 transition-all"
+                    />
+                  </div>
+
+                  {/* Email Input */}
+                  <div>
+                    <label 
+                      htmlFor="contact-email" 
+                      className="block text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-1.5"
+                    >
+                      Email Address <span className="text-emerald-600">*</span>
+                    </label>
+                    <input
+                      id="contact-email"
+                      type="email"
+                      required
+                      placeholder="you@example.com"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-sm text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-stone-900 dark:focus:ring-stone-100 transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Phone Input */}
+                  <div>
+                    <label 
+                      htmlFor="contact-phone" 
+                      className="block text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-1.5"
+                    >
+                      Phone Number <span className="text-stone-400 lowercase font-normal">(optional)</span>
+                    </label>
+                    <input
+                      id="contact-phone"
+                      type="tel"
+                      placeholder="e.g. +92 300 1234567"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-sm text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-stone-900 dark:focus:ring-stone-100 transition-all"
+                    />
+                  </div>
+
+                  {/* Subject Input */}
+                  <div>
+                    <label 
+                      htmlFor="contact-subject" 
+                      className="block text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-1.5"
+                    >
+                      Inquiry Subject
                     </label>
                     <input
                       id="contact-subject"
                       type="text"
+                      placeholder="e.g. Project Inquiry / Collaboration"
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      placeholder="Product design partnership / Senior Role"
-                      className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-stone-50 dark:bg-stone-950 border border-stone-300/80 dark:border-stone-700 rounded-xl text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:border-stone-500 focus:bg-white dark:focus:bg-stone-900 transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-sm text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-stone-900 dark:focus:ring-stone-100 transition-all"
                     />
                   </div>
+                </div>
 
-                  <div>
-                    <label htmlFor="contact-message" className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
-                      Message *
-                    </label>
-                    <textarea
-                      id="contact-message"
-                      required
-                      rows={5}
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Tell me about your project, timeline, or open role requirements..."
-                      className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-stone-50 dark:bg-stone-950 border border-stone-300/80 dark:border-stone-700 rounded-xl text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:border-stone-500 focus:bg-white dark:focus:bg-stone-900 transition-all resize-y"
-                    />
-                  </div>
+                {/* Message Textarea */}
+                <div>
+                  <label 
+                    htmlFor="contact-message" 
+                    className="block text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-1.5"
+                  >
+                    Your Message <span className="text-emerald-600">*</span>
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    required
+                    rows={4}
+                    placeholder="Write your message or inquiry here..."
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-sm text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-stone-900 dark:focus:ring-stone-100 transition-all resize-y"
+                  />
+                </div>
 
-                  <div className="pt-2 flex items-center justify-between">
-                    <span className="text-[11px] text-stone-400">
-                      * Required fields
-                    </span>
-                    <button
-                      id="contact-submit-btn"
-                      type="submit"
-                      disabled={status === 'submitting'}
-                      className="inline-flex items-center gap-2 px-6 py-2.5 text-xs sm:text-sm font-bold text-white bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white rounded-xl transition-all disabled:opacity-50 shadow-xs"
-                    >
-                      <Send className="w-4 h-4" />
-                      <span>{status === 'submitting' ? 'Sending...' : 'Send Message'}</span>
-                    </button>
-                  </div>
-                </form>
-              )}
+                {/* Submit Button */}
+                <div className="pt-2 flex items-center justify-between">
+                  <span className="text-[11px] text-stone-500 font-mono">
+                    All messages delivered directly
+                  </span>
+                  
+                  <button
+                    id="contact-submit-btn"
+                    type="submit"
+                    disabled={status === 'submitting'}
+                    className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:to-teal-700 transition-all shadow-md shadow-emerald-600/25 disabled:opacity-50 cursor-pointer hover:scale-[1.02]"
+                  >
+                    <span>{status === 'submitting' ? 'Sending...' : 'Send Message'}</span>
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
+              </form>
+            )}
 
-            </div>
           </div>
-
         </div>
 
       </div>

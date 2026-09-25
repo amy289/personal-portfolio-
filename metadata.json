@@ -1,6 +1,6 @@
 {
   "name": "Personal Portfolio Website",
-  "description": "A modern, responsive personal portfolio website showcasing projects, skills, experience, and an interactive resume.",
+  "description": "Personal portfolio website for Amyy, Software Engineering student at University of Sindh, Jamshoro showcasing projects, skills, education, and resume.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

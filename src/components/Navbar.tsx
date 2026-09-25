@@ -2,20 +2,18 @@ import { useState, useEffect } from 'react';
 import { 
   Menu, 
   X, 
-  Sun, 
-  Moon, 
   FileText, 
   Settings, 
   Send,
-  ExternalLink,
-  Code2
+  Phone,
+  GraduationCap
 } from 'lucide-react';
 import { PortfolioData } from '../types';
 
 interface NavbarProps {
   portfolio: PortfolioData;
-  isDark: boolean;
-  onToggleTheme: () => void;
+  isDark?: boolean;
+  onToggleTheme?: () => void;
   onOpenResume: () => void;
   onOpenEditor: () => void;
 }
@@ -40,9 +38,8 @@ export default function Navbar({
 
   const navLinks = [
     { label: 'About', href: '#about' },
+    { label: 'Education & Certs', href: '#education' },
     { label: 'Projects', href: '#projects' },
-    { label: 'Skills', href: '#skills' },
-    { label: 'Experience', href: '#experience' },
     { label: 'Contact', href: '#contact' },
   ];
 
@@ -75,7 +72,7 @@ export default function Navbar({
                 {portfolio.name}
               </span>
               <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium hidden sm:inline-block">
-                Portfolio
+                Software Engineering Student
               </span>
             </div>
           </a>
@@ -85,7 +82,7 @@ export default function Navbar({
             {navLinks.map((link) => (
               <a
                 key={link.label}
-                id={`nav-link-${link.label.toLowerCase()}`}
+                id={`nav-link-${link.label.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                 href={link.href}
                 className="px-3.5 py-1.5 text-xs font-semibold text-stone-600 hover:text-stone-950 dark:text-stone-400 dark:hover:text-stone-100 rounded-full hover:bg-white dark:hover:bg-stone-800 transition-all"
               >
@@ -96,29 +93,6 @@ export default function Navbar({
 
           {/* Action Controls */}
           <div className="flex items-center gap-2">
-            {/* Theme Toggle */}
-            <button
-              id="theme-toggle-btn"
-              type="button"
-              onClick={onToggleTheme}
-              className="p-2 text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800/80 transition-colors"
-              aria-label="Toggle dark mode"
-              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            >
-              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-
-            {/* Resume Button */}
-            <button
-              id="nav-resume-btn"
-              type="button"
-              onClick={onOpenResume}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-stone-700 dark:text-stone-200 bg-white dark:bg-stone-800 border border-stone-300/80 dark:border-stone-700 rounded-lg hover:border-stone-400 dark:hover:border-stone-600 hover:bg-stone-50 dark:hover:bg-stone-700/60 transition-all shadow-2xs"
-            >
-              <FileText className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
-              <span>Resume</span>
-            </button>
-
             {/* Live Customizer Button */}
             <button
               id="nav-editor-btn"
@@ -128,7 +102,7 @@ export default function Navbar({
               title="Customize your portfolio details"
             >
               <Settings className="w-3.5 h-3.5 text-stone-600 dark:text-stone-300" />
-              <span className="hidden lg:inline">Edit Portfolio</span>
+              <span className="hidden xl:inline">Edit Details</span>
             </button>
 
             {/* Contact CTA */}
@@ -138,7 +112,7 @@ export default function Navbar({
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white rounded-lg transition-all shadow-xs"
             >
               <Send className="w-3.5 h-3.5" />
-              <span>Hire Me</span>
+              <span>Contact</span>
             </a>
 
             {/* Mobile Menu Toggle */}
@@ -165,7 +139,7 @@ export default function Navbar({
             {navLinks.map((link) => (
               <a
                 key={link.label}
-                id={`mobile-nav-link-${link.label.toLowerCase()}`}
+                id={`mobile-nav-link-${link.label.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                 href={link.href}
                 onClick={handleNavClick}
                 className="px-3 py-2 text-sm font-medium text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-900 rounded-lg transition-colors"
@@ -174,18 +148,13 @@ export default function Navbar({
               </a>
             ))}
             <div className="pt-2 border-t border-stone-200 dark:border-stone-800 flex flex-col gap-2 mt-1">
-              <button
-                id="mobile-nav-resume-btn"
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenResume();
-                }}
-                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-900 rounded-lg"
+              <a
+                href={`tel:${portfolio.phone}`}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-emerald-700 dark:text-emerald-400 hover:bg-stone-100 dark:hover:bg-stone-900 rounded-lg"
               >
-                <FileText className="w-4 h-4 text-stone-500" />
-                <span>View Full Resume / CV</span>
-              </button>
+                <Phone className="w-4 h-4" />
+                <span>Call {portfolio.phone}</span>
+              </a>
               <button
                 id="mobile-nav-editor-btn"
                 type="button"
