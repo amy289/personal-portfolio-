@@ -11,8 +11,8 @@ import PortfolioEditorModal from './components/PortfolioEditorModal';
 import { initialPortfolioData } from './data/defaultPortfolio';
 import { PortfolioData, ContactSubmission } from './types';
 
-const STORAGE_KEY = 'amyy_portfolio_data_v5';
-const MESSAGES_KEY = 'amyy_portfolio_messages_v5';
+const STORAGE_KEY = 'amyy_portfolio_data_v6';
+const MESSAGES_KEY = 'amyy_portfolio_messages_v6';
 const THEME_KEY = 'amyy_portfolio_theme';
 
 export default function App() {
@@ -121,7 +121,7 @@ export default function App() {
   };
 
   return (
-    <div id="portfolio-app-root" className="min-h-screen bg-stone-50 text-stone-900 dark:bg-stone-950 dark:text-stone-100 flex flex-col font-sans transition-colors duration-200">
+    <div id="portfolio-app-root" className="min-h-screen bg-[#F5F2EB] text-stone-900 dark:bg-stone-950 dark:text-stone-100 flex flex-col font-sans transition-colors duration-200">
       
       {/* Anchor for top of page */}
       <div id="top" />

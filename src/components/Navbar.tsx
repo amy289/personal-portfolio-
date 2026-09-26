@@ -2,11 +2,9 @@ import { useState, useEffect } from 'react';
 import { 
   Menu, 
   X, 
-  FileText, 
   Settings, 
   Send,
-  Phone,
-  GraduationCap
+  Phone
 } from 'lucide-react';
 import { PortfolioData } from '../types';
 
@@ -20,9 +18,6 @@ interface NavbarProps {
 
 export default function Navbar({
   portfolio,
-  isDark,
-  onToggleTheme,
-  onOpenResume,
   onOpenEditor
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -52,7 +47,7 @@ export default function Navbar({
       id="main-navbar"
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 no-print ${
         isScrolled
-          ? 'bg-stone-50/90 dark:bg-stone-950/90 backdrop-blur-md border-b border-stone-200/80 dark:border-stone-800/80 shadow-xs py-3'
+          ? 'bg-[#F5F2EB]/90 dark:bg-stone-950/90 backdrop-blur-md border-b border-stone-300/60 dark:border-stone-800/80 shadow-xs py-3'
           : 'bg-transparent py-5'
       }`}
     >
@@ -78,13 +73,13 @@ export default function Navbar({
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav id="desktop-nav" className="hidden md:flex items-center gap-1 bg-stone-100/70 dark:bg-stone-900/70 p-1 rounded-full border border-stone-200/60 dark:border-stone-800/60">
+          <nav id="desktop-nav" className="hidden md:flex items-center gap-1.5 bg-stone-100/80 dark:bg-stone-900/80 p-1.5 rounded-full border border-stone-200/80 dark:border-stone-800/80 shadow-2xs">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 id={`nav-link-${link.label.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                 href={link.href}
-                className="px-3.5 py-1.5 text-xs font-semibold text-stone-600 hover:text-stone-950 dark:text-stone-400 dark:hover:text-stone-100 rounded-full hover:bg-white dark:hover:bg-stone-800 transition-all"
+                className="px-5 py-2.5 text-sm sm:text-[15px] font-semibold text-stone-700 hover:text-stone-950 dark:text-stone-300 dark:hover:text-stone-100 rounded-full hover:bg-white dark:hover:bg-stone-800 transition-all"
               >
                 {link.label}
               </a>
@@ -92,26 +87,26 @@ export default function Navbar({
           </nav>
 
           {/* Action Controls */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             {/* Live Customizer Button */}
             <button
               id="nav-editor-btn"
               type="button"
               onClick={onOpenEditor}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-stone-900 dark:text-stone-100 bg-stone-200/80 dark:bg-stone-800 hover:bg-stone-300/80 dark:hover:bg-stone-700 rounded-lg transition-colors border border-stone-300/50 dark:border-stone-700/50"
+              className="inline-flex items-center gap-2 px-3.5 py-2.5 text-sm font-semibold text-stone-900 dark:text-stone-100 bg-stone-200/80 dark:bg-stone-800 hover:bg-stone-300/80 dark:hover:bg-stone-700 rounded-xl transition-colors border border-stone-300/50 dark:border-stone-700/50 cursor-pointer"
               title="Customize your portfolio details"
             >
-              <Settings className="w-3.5 h-3.5 text-stone-600 dark:text-stone-300" />
+              <Settings className="w-4 h-4 text-stone-600 dark:text-stone-300" />
               <span className="hidden xl:inline">Edit Details</span>
             </button>
 
-            {/* Contact CTA */}
+            {/* Contact CTA Button (Larger & More Prominent) */}
             <a
               id="nav-contact-cta"
               href="#contact"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white rounded-lg transition-all shadow-xs"
+              className="inline-flex items-center gap-2 px-6 py-2.5 text-sm sm:text-[15px] font-bold text-white bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white rounded-xl transition-all shadow-sm hover:scale-[1.02]"
             >
-              <Send className="w-3.5 h-3.5" />
+              <Send className="w-4 h-4" />
               <span>Contact</span>
             </a>
 
@@ -120,10 +115,10 @@ export default function Navbar({
               id="mobile-menu-toggle-btn"
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+              className="md:hidden p-2.5 text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white rounded-xl hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
               aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
@@ -142,7 +137,7 @@ export default function Navbar({
                 id={`mobile-nav-link-${link.label.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                 href={link.href}
                 onClick={handleNavClick}
-                className="px-3 py-2 text-sm font-medium text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-900 rounded-lg transition-colors"
+                className="px-4 py-3 text-base font-semibold text-stone-800 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-900 rounded-xl transition-colors"
               >
                 {link.label}
               </a>

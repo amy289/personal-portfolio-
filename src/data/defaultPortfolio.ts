@@ -106,7 +106,7 @@ export const initialPortfolioData: PortfolioData = {
       category: "Web Development",
       tags: ["HTML5", "CSS3", "JavaScript", "Responsive Design", "Live Project"],
       statusNote: "Live & Launched",
-      year: "2024",
+      year: "2026",
       featured: true,
       keyFeatures: [
         "Officially launched live website with multi-device responsive design",
@@ -118,22 +118,22 @@ export const initialPortfolioData: PortfolioData = {
     },
     {
       id: "project-sindhi-got",
-      title: "Sindhi GOT App",
-      tagline: "Sindhi-language app concept developed as a student project",
-      description: "An innovative Sindhi-language mobile application concept developed as a student project to explore regional language software engineering and accessibility.",
-      longDescription: "The Sindhi GOT App is a student-led software concept designed to bridge language accessibility by providing a rich user experience entirely in the Sindhi language. The project incorporates regional typography, intuitive screen navigation, and student-researched software architecture models. (Note: Developed for academic concept exploration; not publicly launched).",
-      category: "App Concept & Development",
-      tags: ["Sindhi Language", "Software Engineering", "UI Concept", "Localization"],
-      statusNote: "Student Concept Project • Not publicly launched",
-      year: "2024",
+      title: "Sindhi GPT App",
+      tagline: "Sindhi-language AI application in development",
+      description: "An innovative Sindhi-language AI application exploring regional language natural language processing, localized accessibility, and intelligent prompt interactions.",
+      longDescription: "Sindhi GPT App is an upcoming specialized artificial intelligence and vernacular application designed to bridge language accessibility by providing intelligent assistance entirely in the Sindhi language. Currently in development; not yet launched.",
+      category: "AI & Localization",
+      tags: ["Sindhi Language", "Artificial Intelligence", "App Engineering", "In Development"],
+      statusNote: "In Development • Not Launched Yet",
+      year: "2026",
       featured: true,
       keyFeatures: [
-        "Custom Sindhi-language UI layout and vernacular font typography",
-        "User flow architecture designed specifically for regional accessibility",
-        "Student software engineering project showcasing localized digital innovation",
-        "Clear interface hierarchy with intuitive navigation components"
+        "Custom Sindhi-language AI interface and vernacular font typography",
+        "Intelligent regional language conversational assistance in development",
+        "Software engineering prototype focusing on local digital inclusion",
+        "Clear interface hierarchy with responsive navigation components"
       ],
-      technologiesUsed: ["Software Engineering Principles", "App UI Design", "Localization"]
+      technologiesUsed: ["AI Concepts", "Software Engineering", "Sindhi Localization", "UI Architecture"]
     }
   ],
   stats: [

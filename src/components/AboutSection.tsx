@@ -3,9 +3,7 @@ import {
   Globe, 
   ShieldAlert, 
   Code, 
-  Sparkles, 
-  ArrowRight,
-  Sparkle
+  Sparkles 
 } from 'lucide-react';
 import { PortfolioData } from '../types';
 
@@ -78,10 +76,6 @@ export default function AboutSection({ portfolio }: AboutSectionProps) {
         
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold mb-3 shadow-2xs">
-            <Sparkle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span>Profile & Academic Journey</span>
-          </div>
           <h2 className="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl text-stone-900 dark:text-stone-100 tracking-tight">
             About Me
           </h2>
@@ -156,21 +150,6 @@ export default function AboutSection({ portfolio }: AboutSectionProps) {
                 );
               })}
             </div>
-          </div>
-
-          {/* Quick Connect Footer */}
-          <div className="pt-6 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between">
-            <span className="text-xs text-stone-500 font-mono flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>University of Sindh, Jamshoro</span>
-            </span>
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 transition-all shadow-xs"
-            >
-              <span>Connect with Amyy</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
           </div>
 
         </div>

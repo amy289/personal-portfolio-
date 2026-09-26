@@ -1,12 +1,12 @@
 import { 
   GraduationCap, 
-  Award, 
-  CheckCircle2, 
-  Clock, 
   MapPin, 
+  Check, 
+  Award, 
+  BrainCircuit, 
   ShieldCheck, 
-  BrainCircuit,
-  Check
+  CheckCircle2, 
+  Clock 
 } from 'lucide-react';
 import { EducationInfo, CertificationItem } from '../types';
 
@@ -15,18 +15,22 @@ interface EducationSectionProps {
   certifications: CertificationItem[];
 }
 
-export default function EducationSection({ education, certifications }: EducationSectionProps) {
+export default function EducationSection({
+  education,
+  certifications
+}: EducationSectionProps) {
   const courseworkTags = [
     'Object-Oriented Programming (Java)',
     'Data Structures & Algorithms',
-    'Web Systems & Architecture',
+    'Database Management Systems',
+    'Web Engineering',
+    'Discrete Mathematics',
     'Software Engineering Methodologies',
-    'Database Management & SQL',
     'Computer Architecture & OS'
   ];
 
   return (
-    <section id="education" className="py-20 md:py-28 border-t border-stone-200/90 dark:border-stone-800/90 bg-stone-50/60 dark:bg-stone-950/40 relative overflow-hidden">
+    <section id="education" className="py-20 md:py-28 border-t border-stone-300/60 dark:border-stone-800/90 bg-[#EFECE4]/50 dark:bg-stone-950/40 relative overflow-hidden">
       {/* Background ambient color */}
       <div className="absolute top-1/4 right-10 w-96 h-96 bg-emerald-500/5 blur-3xl pointer-events-none -z-10" />
 
@@ -34,10 +38,6 @@ export default function EducationSection({ education, certifications }: Educatio
         
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold mb-3 shadow-xs">
-            <GraduationCap className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>Academic Qualifications</span>
-          </div>
           <h2 className="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl text-stone-900 dark:text-stone-100 tracking-tight">
             Education & Certifications
           </h2>
@@ -163,9 +163,6 @@ export default function EducationSection({ education, certifications }: Educatio
                 <span>Professional Certifications</span>
               </h3>
             </div>
-            <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-              Verified
-            </span>
           </div>
 
           {/* 2 Side-by-Side Cards with vivid individual gradients */}

@@ -1,16 +1,8 @@
 import { useState } from 'react';
 import { 
-  FolderGit2, 
-  Sparkles, 
   ArrowUpRight, 
   X, 
-  CheckCircle,
-  Code2,
-  Globe,
-  Layers,
-  Info,
-  CheckCircle2,
-  ExternalLink
+  CheckCircle2
 } from 'lucide-react';
 import { ProjectItem } from '../types';
 
@@ -26,27 +18,16 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-semibold mb-3 shadow-2xs">
-              <FolderGit2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-              <span>Software & Web Engineering</span>
-            </div>
-            <h2 className="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl text-stone-900 dark:text-stone-100 tracking-tight">
-              Featured Projects
-            </h2>
-            <p className="text-stone-600 dark:text-stone-400 text-sm sm:text-base mt-2 max-w-xl">
-              Software engineering developments, including the live Begum Gees web platform and localized academic applications.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-stone-100/80 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-800 text-xs text-stone-600 dark:text-stone-300 shadow-2xs">
-            <Info className="w-4 h-4 text-stone-400 shrink-0" />
-            <span>Demonstrating practical frontend & software design</span>
-          </div>
+        <div className="flex flex-col mb-14">
+          <h2 className="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl text-stone-900 dark:text-stone-100 tracking-tight">
+            Featured Projects
+          </h2>
+          <p className="text-stone-600 dark:text-stone-400 text-sm sm:text-base mt-2 max-w-xl">
+            Software engineering developments, including the live Begum Gees web platform and localized academic applications.
+          </p>
         </div>
 
-        {/* Projects Grid (Material 3 Cards) */}
+        {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project) => {
             const isLive = project.id === 'project-begum-gees' || project.statusNote?.toLowerCase().includes('live') || project.statusNote?.toLowerCase().includes('launch');
@@ -136,10 +117,10 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                   <button
                     type="button"
                     onClick={() => setActiveProject(project)}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-stone-900 dark:text-stone-100 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
+                    className="inline-flex items-center gap-2 text-sm font-bold text-stone-900 dark:text-stone-100 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors cursor-pointer py-1"
                   >
                     <span>View Project Architecture</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
+                    <ArrowUpRight className="w-4 h-4" />
                   </button>
 
                   <span className="text-xs font-mono text-stone-400">
@@ -168,7 +149,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
             <button
               type="button"
               onClick={() => setActiveProject(null)}
-              className="absolute right-6 top-6 p-2 text-stone-400 hover:text-stone-800 dark:hover:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-xl transition-colors"
+              className="absolute right-6 top-6 p-2 text-stone-400 hover:text-stone-800 dark:hover:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-xl transition-colors cursor-pointer"
               aria-label="Close project modal"
             >
               <X className="w-5 h-5" />
@@ -247,7 +228,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
               <button
                 type="button"
                 onClick={() => setActiveProject(null)}
-                className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-stone-900 dark:bg-stone-100 dark:text-stone-900 transition-colors shadow-2xs"
+                className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-stone-900 dark:bg-stone-100 dark:text-stone-900 transition-colors shadow-2xs cursor-pointer"
               >
                 Close Details
               </button>
